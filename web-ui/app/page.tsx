@@ -65,7 +65,7 @@ export default function Home() {
       document.body.appendChild(link);
       link.click();
       link.remove();
-    } catch (_err) {
+    } catch {
       setError('Failed to download file. Please try again.');
     }
   };
