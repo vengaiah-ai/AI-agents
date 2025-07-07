@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-output/ #(contains generated PDFs)
+output #(contains generated PDFs)
 output.txt
 *.log
 env/, venv/, .venv/

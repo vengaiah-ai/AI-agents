@@ -1,7 +1,3 @@
-from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
 import os
 import sys
 from pathlib import Path
@@ -10,6 +6,11 @@ from typing import Optional
 
 # Add the parent directory to sys.path to import the existing modules
 sys.path.append(str(Path(__file__).parent.parent))
+
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
 
 from orchestration import ContentOrchestrator
 
