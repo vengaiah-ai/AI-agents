@@ -50,14 +50,14 @@ jobs:
 
       - name: Install frontend dependencies
         run: |
-          cd frontend
+          cd web-ui
           npm ci
 
       - name: Run frontend lint
-        run: cd frontend && npm run lint
+        run: cd web-ui && npm run lint
 
       - name: Run frontend tests
-        run: cd frontend && npm run test
+        run: cd web-ui && npm run test
 
   build-and-push:
     name: Build Docker & Push to ECR
@@ -84,7 +84,7 @@ jobs:
 
       - name: Build and push frontend image
         run: |
-          cd frontend
+          cd web-ui
           docker build -t $ECR_REPO_FRONTEND:$GITHUB_SHA .
           docker push $ECR_REPO_FRONTEND:$GITHUB_SHA
 
