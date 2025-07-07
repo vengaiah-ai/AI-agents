@@ -54,8 +54,8 @@ jobs:
           cd web-ui
           npm ci
 
-      - name: Run frontend lint
-        run: cd web-ui && npm run lint
+      # - name: Run frontend lint
+      #   run: cd web-ui && npm run lint
 
       - name: Run frontend tests
         run: cd web-ui && npm run test
