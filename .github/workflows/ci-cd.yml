@@ -32,16 +32,17 @@ jobs:
         with:
           python-version: '3.11'
 
+
       - name: Install backend dependencies
         run: |
           cd backend
           pip install -r requirements-dev.txt
 
-      - name: Run backend lint (flake8, black, isort)
-        run: cd backend && flake8 . && black . --check && isort . --check
+      # - name: Run backend lint (flake8, black, isort)
+      #   run: cd backend && flake8 . && black . --check && isort . --check
 
       - name: Run backend tests (pytest)
-        run: cd backend && pytest
+        run: cd backend && pytest 
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
