@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Download, FileText, CheckCircle, AlertCircle } from 'lucide-react';
@@ -41,8 +40,13 @@ export default function Home() {
       });
 
       setResult(response.data);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to generate content. Please try again.');
+    } catch (_err: unknown) {
+      // TypeScript: _err is unknown, so we need to type guard
+      if (axios.isAxiosError(_err)) {
+        setError(_err.response?.data?.detail || 'Failed to generate content. Please try again.');
+      } else {
+        setError('Failed to generate content. Please try again.');
+      }
     } finally {
       setIsGenerating(false);
     }
@@ -61,7 +65,7 @@ export default function Home() {
       document.body.appendChild(link);
       link.click();
       link.remove();
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to download file. Please try again.');
     }
   };
