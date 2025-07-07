@@ -1,0 +1,72 @@
+#Python/Backend/Agents
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+output/ #(contains generated PDFs)
+output.txt
+*.log
+env/, venv/, .venv/
+demoAI/ #(this is a virtual environment folder)
+backend/__pycache__/
+Agents/__pycache__/
+#Node.js/Frontend
+node_modules/
+web-ui/node_modules/
+web-ui/.next/
+web-ui/out/
+web-ui/.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json #(optional, if you want to lock dependencies, keep it)
+web-ui/package-lock.json #(same as above)
+#Environment/Sensitive
+.env
+.env.*
+!*.env.example (keep example env files)
+secrets/
+keys/
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+.aws/
+credentials
+config
+#IDE/Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+#Docker
+.dockerignore
+#Test/Build/Cache
+build/
+dist/
+coverage/
+.pytest_cache/
+.cache/
+.tox/
+.nox/
+.mypy_cache/
+.nyc_output/
+test-results/
+#Terraform (if you use it in the future)
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+#Other
+logs/
+*.bak
+*.backup
+*.old
+*.tmp
+*.temp
+temp/
+tmp/

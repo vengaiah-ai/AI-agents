@@ -1,0 +1,5 @@
+langchain
+groq
+langchain-groq
+dotenv
+reportlab>=4.0.0
