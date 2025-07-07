@@ -37,8 +37,8 @@ jobs:
           cd backend
           pip install -r requirements-dev.txt
 
-      - name: Run backend lint (flake8)
-        run: cd backend && flake8 .
+      - name: Run backend lint (flake8, black, isort)
+        run: cd backend && flake8 . && black . --check && isort . --check
 
       - name: Run backend tests (pytest)
         run: cd backend && pytest
