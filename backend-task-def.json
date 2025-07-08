@@ -1,27 +1,78 @@
 {
-    "family": "backendTask",
-    "requiresCompatibilities": ["FARGATE"],
-    "networkMode": "awsvpc",
-    "cpu": "512",
-    "memory": "1024",
-    "executionRoleArn": "${EXECUTION_ROLE_ARN}",
-    "containerDefinitions": [
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:860056522518:task-definition/backendTask:4",
+  "containerDefinitions": [
       {
-        "name": "Backend",
-        "image": "placeholder", 
-        "cpu": 256,
-        "memory": 512,
-        "essential": true,
-        "portMappings": [{ "containerPort": 8000, "protocol": "tcp" }],
-        "logConfiguration": {
-          "logDriver": "awslogs",
-          "options": {
-            "awslogs-group": "/ecs/backend",
-            "awslogs-region": "us-east-1",
-            "awslogs-stream-prefix": "ecs"
-          }
-        }
+          "name": "Backend",
+          "image": "860056522518.dkr.ecr.us-east-1.amazonaws.com/backend:94e00f140203cfc4ba856e2cfdb629e429bdb07e",
+          "cpu": 256,
+          "memory": 512,
+          "portMappings": [
+              {
+                  "containerPort": 8000,
+                  "hostPort": 8000,
+                  "protocol": "tcp"
+              }
+          ],
+          "essential": true,
+          "environment": [
+              {
+                  "name": "EXECUTION_ROLE_ARN",
+                  "value": "arn:aws:iam::860056522518:role/ecsTaskExecutionRole"
+              }
+          ],
+          "mountPoints": [],
+          "volumesFrom": [],
+          "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                  "awslogs-group": "/ecs/backend",
+                  "awslogs-region": "us-east-1",
+                  "awslogs-stream-prefix": "ecs"
+              }
+          },
+          "systemControls": []
       }
-    ]
-  }
-  
+  ],
+  "family": "backendTask",
+  "executionRoleArn": "arn:aws:iam::860056522518:role/${EXECUTION_ROLE_ARN}",
+  "networkMode": "awsvpc",
+  "revision": 4,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+      {
+          "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+      },
+      {
+          "name": "ecs.capability.execution-role-awslogs"
+      },
+      {
+          "name": "com.amazonaws.ecs.capability.ecr-auth"
+      },
+      {
+          "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+      },
+      {
+          "name": "ecs.capability.execution-role-ecr-pull"
+      },
+      {
+          "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+          "name": "ecs.capability.task-eni"
+      }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+      "EC2",
+      "FARGATE"
+  ],
+  "requiresCompatibilities": [
+      "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "registeredAt": "2025-07-08T03:14:53.928Z",
+  "registeredBy": "arn:aws:iam::860056522518:user/PVC_Main",
+  "tags": []
+}

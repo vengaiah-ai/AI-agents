@@ -115,7 +115,7 @@ jobs:
       - name: Deploy Backend Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.backend-def.outputs.task-definition }}
+          task-definition: backend-task-def.json
           cluster: ${{ env.ECS_CLUSTER }}
           service: ${{ env.ECS_SERVICE_BACKEND }}
           wait-for-service-stability: true
