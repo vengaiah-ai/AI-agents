@@ -103,30 +103,41 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Render backend task definition
+        id: backend-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: backend-task-def.json
+          container-name: ${{ env.CONTAINER_NAME_BACKEND }}
+          image: ${{ env.ECR_REPO_BACKEND }}:${{ github.sha }}
 
       - name: Deploy Backend Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
+          task-definition: ${{ steps.backend-def.outputs.task-definition }}
           cluster: ${{ env.ECS_CLUSTER }}
           service: ${{ env.ECS_SERVICE_BACKEND }}
-          image: ${{ env.ECR_REPO_BACKEND }}:$GITHUB_SHA
-          container-name: ${{ env.CONTAINER_NAME_BACKEND }}
+          wait-for-service-stability: true
+
+      - name: Render frontend task definition
+        id: frontend-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: frontend-task-def.json
+          container-name: ${{ env.CONTAINER_NAME_FRONTEND }}
+          image: ${{ env.ECR_REPO_FRONTEND }}:${{ github.sha }}
 
       - name: Deploy Frontend Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
+          task-definition: ${{ steps.frontend-def.outputs.task-definition }}
           cluster: ${{ env.ECS_CLUSTER }}
           service: ${{ env.ECS_SERVICE_FRONTEND }}
-          image: ${{ env.ECR_REPO_FRONTEND }}:$GITHUB_SHA
-          container-name: ${{ env.CONTAINER_NAME_FRONTEND }}
-
-      - name: Wait for service stability
-        run: |
-          aws ecs wait services-stable \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE_BACKEND $ECS_SERVICE_FRONTEND
+          wait-for-service-stability: true
 
       - name: Notify Success
-        run: echo "Deployment completed successfully!"
+        run: echo "Deployment completed successfully"
