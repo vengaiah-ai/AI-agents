@@ -110,7 +110,7 @@ jobs:
           image: ${{ env.ECR_REPO_BACKEND }}:${{ github.sha }}
           environment-variables: |
             EXECUTION_ROLE_ARN=${{ secrets.EXECUTION_ROLE_ARN }}
-            TASK_ROLE_ARN=${{ secrets.TASK_ROLE_ARN }}
+            
 
       - name: Deploy Backend Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
@@ -129,7 +129,7 @@ jobs:
           image: ${{ env.ECR_REPO_FRONTEND }}:${{ github.sha }}
           environment-variables: |
             EXECUTION_ROLE_ARN=${{ secrets.EXECUTION_ROLE_ARN }}
-            TASK_ROLE_ARN=${{ secrets.TASK_ROLE_ARN }}
+            
 
       - name: Deploy Frontend Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
