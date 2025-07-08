@@ -12,7 +12,7 @@ env:
   AWS_REGION: us-east-1
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECR_REPO_BACKEND: ${{ secrets.ECR_REPO_BACKEND }}
   ECR_REPO_FRONTEND: ${{ secrets.ECR_REPO_FRONTEND }}
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
@@ -22,7 +22,6 @@ env:
   CONTAINER_NAME_FRONTEND: Frontend
 
 jobs:
-
   lint-and-test:
     name: Lint & Test
     runs-on: ubuntu-latest
@@ -35,17 +34,15 @@ jobs:
         with:
           python-version: '3.11'
 
-
       - name: Install backend dependencies
         run: |
           cd backend
           pip install -r requirements-dev.txt
 
-      # - name: Run backend lint (flake8, black, isort)
-      #   run: cd backend && flake8 . && black . --check && isort . --check
-
       - name: Run backend tests (pytest)
-        run: cd backend && pytest 
+        run: |
+          cd backend
+          pytest
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -56,12 +53,6 @@ jobs:
         run: |
           cd web-ui
           npm ci
-
-      # - name: Run frontend lint
-      #   run: cd web-ui && npm run lint
-
-      # - name: Run frontend tests
-      #   run: cd web-ui && npm run test
 
   build-and-push:
     name: Build Docker & Push to ECR
@@ -83,21 +74,21 @@ jobs:
       - name: Build and push backend image
         run: |
           cd backend
-          docker build -t $ECR_REPO_BACKEND:$GITHUB_SHA .
-          docker push $ECR_REPO_BACKEND:$GITHUB_SHA
+          docker build -t $ECR_REPO_BACKEND:${{ github.sha }} .
+          docker push $ECR_REPO_BACKEND:${{ github.sha }}
 
       - name: Build and push frontend image
         run: |
           cd web-ui
-          docker build -t $ECR_REPO_FRONTEND:$GITHUB_SHA .
-          docker push $ECR_REPO_FRONTEND:$GITHUB_SHA
+          docker build -t $ECR_REPO_FRONTEND:${{ github.sha }} .
+          docker push $ECR_REPO_FRONTEND:${{ github.sha }}
 
   deploy:
     name: Deploy to ECS
     runs-on: ubuntu-latest
     needs: build-and-push
     environment:
-    name: production
+      name: production
 
     steps:
       - name: Checkout source
@@ -150,4 +141,3 @@ jobs:
 
       - name: Notify Success
         run: echo "Deployment completed successfully!"
-
