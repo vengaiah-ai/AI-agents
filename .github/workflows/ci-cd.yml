@@ -118,9 +118,9 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: backend-task-def.json
-          cluster: ${{ env.ECS_CLUSTER }}
-          service: ${{ env.ECS_SERVICE_BACKEND }}
-          wait-for-service-stability: true
+          cluster: demo-ai-cluster
+          service: backendTask-service-85sy1fha
+          
 
       - name: Render frontend task definition
         id: frontend-def
@@ -137,9 +137,9 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.frontend-def.outputs.task-definition }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          service: ${{ env.ECS_SERVICE_FRONTEND }}
-          wait-for-service-stability: true
+          cluster: demo-ai-cluster
+          service: frontendTask-service-7jeq2vgo
+          
 
       - name: Notify Success
         run: echo "Deployment completed successfully!"
