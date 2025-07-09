@@ -105,7 +105,7 @@ jobs:
 
       - name: Render backend task definition
         id: backend-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v2
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: backend-task-def.json
           container-name: ${{ env.CONTAINER_NAME_BACKEND }}
@@ -124,7 +124,7 @@ jobs:
 
       - name: Render frontend task definition
         id: frontend-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v2
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: frontend-task-def.json
           container-name: ${{ env.CONTAINER_NAME_FRONTEND }}
