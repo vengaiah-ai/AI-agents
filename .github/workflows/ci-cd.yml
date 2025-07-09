@@ -105,7 +105,7 @@ jobs:
 
       - name: Render backend task definition
         id: backend-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        uses: aws-actions/amazon-ecs-render-task-definition@v2
         with:
           task-definition: backend-task-def.json
           container-name: ${{ env.CONTAINER_NAME_BACKEND }}
@@ -115,7 +115,7 @@ jobs:
             
 
       - name: Deploy Backend Service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: backend-task-def.json
           cluster: demo-ai-cluster
@@ -124,7 +124,7 @@ jobs:
 
       - name: Render frontend task definition
         id: frontend-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        uses: aws-actions/amazon-ecs-render-task-definition@v2
         with:
           task-definition: frontend-task-def.json
           container-name: ${{ env.CONTAINER_NAME_FRONTEND }}
@@ -134,7 +134,7 @@ jobs:
             
 
       - name: Deploy Frontend Service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.frontend-def.outputs.task-definition }}
           cluster: demo-ai-cluster
