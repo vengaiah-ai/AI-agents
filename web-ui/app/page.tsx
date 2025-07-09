@@ -13,6 +13,7 @@ interface GenerationResult {
   message: string;
   download_url?: string;
   file_path?: string;
+  article_content?: string; // Added for displaying article content
 }
 
 export default function Home() {
@@ -154,6 +155,12 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {/* Display the article content if available */}
+              {result.article_content && (
+                <div className="mb-4 p-4 bg-white rounded shadow text-gray-800 whitespace-pre-line text-base font-serif">
+                  {result.article_content}
+                </div>
+              )}
               <div className="flex items-center justify-between">
                 <div className="text-sm text-green-700">
                   Your content has been generated and saved as a PDF file.

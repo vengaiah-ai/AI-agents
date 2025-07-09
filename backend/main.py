@@ -39,6 +39,7 @@ class ContentResponse(BaseModel):
     message: str
     file_path: Optional[str] = None
     download_url: Optional[str] = None
+    article_content: Optional[str] = None
 
 @app.get("/")
 async def root():
@@ -69,6 +70,7 @@ async def generate_content(request: ContentRequest, background_tasks: Background
         
         if result.get("success"):
             file_path = result.get("file_path")
+            article_content = result.get("article_content")
             if file_path and os.path.exists(file_path):
                 # Create download URL
                 download_url = f"/api/download/{os.path.basename(file_path)}"
@@ -77,7 +79,8 @@ async def generate_content(request: ContentRequest, background_tasks: Background
                     status="success",
                     message="Content generated successfully",
                     file_path=file_path,
-                    download_url=download_url
+                    download_url=download_url,
+                    article_content=article_content
                 )
             else:
                 raise HTTPException(status_code=500, detail="Generated file not found")

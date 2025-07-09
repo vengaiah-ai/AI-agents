@@ -24,8 +24,9 @@ class ContentOrchestrator:
         """
         try:
             # Run the workflow
+            article_content = None
+            article_found = False
             self.run_workflow(topic)
-            
             # Look for the generated PDF file
             output_dir = Path("output")
             if output_dir.exists():
@@ -34,25 +35,32 @@ class ContentOrchestrator:
                 if pdf_files:
                     # Get the most recent file
                     latest_file = max(pdf_files, key=lambda x: x.stat().st_mtime)
+                    # Try to get the article content from a temp file if available
+                    temp_article_path = Path("output/temp_article.txt")
+                    if temp_article_path.exists():
+                        with open(temp_article_path, "r", encoding="utf-8") as f:
+                            article_content = f.read()
+                        article_found = True
                     return {
                         "success": True,
                         "file_path": str(latest_file),
-                        "message": "Content generated successfully"
+                        "message": "Content generated successfully",
+                        "article_content": article_content if article_found else None
                     }
-            
             # If no PDF found, check for text file
             if os.path.exists("output.txt"):
+                with open("output.txt", "r", encoding="utf-8") as f:
+                    article_content = f.read()
                 return {
                     "success": True,
                     "file_path": "output.txt",
-                    "message": "Content generated successfully (text file)"
+                    "message": "Content generated successfully (text file)",
+                    "article_content": article_content
                 }
-            
             return {
                 "success": False,
                 "error": "No output file generated"
             }
-            
         except Exception as e:
             logger.error(f"Error in generate_content: {str(e)}")
             return {

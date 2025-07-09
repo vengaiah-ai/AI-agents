@@ -5,6 +5,7 @@ from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from groq import APIError
+import os
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
@@ -48,6 +49,10 @@ class WriterAgent:
             logger.info(f"[{self.name}] Successfully received article from Groq.")
 
             logger.info(f"[{self.name}] Content writing complete.")
+            # Save article to a temp file for orchestrator to read
+            os.makedirs("output", exist_ok=True)
+            with open("output/temp_article.txt", "w", encoding="utf-8") as f:
+                f.write(article)
             return A2AMessage(sender=self.name, content={"status": "SUCCESS", "article": article})
             
         except APIError as e:
