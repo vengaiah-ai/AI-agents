@@ -18,7 +18,7 @@ env:
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
   ECS_SERVICE_BACKEND: ${{ secrets.ECS_SERVICE_BACKEND }}
   ECS_SERVICE_FRONTEND: ${{ secrets.ECS_SERVICE_FRONTEND }}
-  CONTAINER_NAME_BACKEND: backend-8080-tcp
+  CONTAINER_NAME_BACKEND: backend
   CONTAINER_NAME_FRONTEND: frontend
 
 jobs:
@@ -76,8 +76,16 @@ jobs:
       - name: Build and push backend image
         run: |
           cd backend
-          docker build -t $ECR_REPO_BACKEND:${{ github.sha }} .
-          docker push $ECR_REPO_BACKEND:${{ github.sha }}
+          IMAGE_SHA=$ECR_REPO_BACKEND:${{ github.sha }}
+          IMAGE_LATEST=$ECR_REPO_BACKEND:latest
+
+          # Build with both tags
+          docker build -t "$IMAGE_SHA" -t "$IMAGE_LATEST" .
+
+          # Push both tags
+          docker push "$IMAGE_SHA"
+          docker push "$IMAGE_LATEST"
+
 
       - name: Build and push frontend image
         run: |
